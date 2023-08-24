@@ -1,0 +1,20 @@
+{
+  "name": "my-records-backend",
+  "version": "1.0.0",
+  "description": "rest API my records app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "npx nodemon --ext js"
+  },
+  "author": "Simon Ferlat",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.2.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.2.0"
+  }
+}
