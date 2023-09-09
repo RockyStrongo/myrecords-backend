@@ -4,8 +4,8 @@
   "description": "rest API my records app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "npx nodemon --ext js"
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development npx nodemon --ext js"
   },
   "author": "Simon Ferlat",
   "license": "ISC",
