@@ -10,6 +10,11 @@ import cors from 'cors';
 dotenv.config();
 
 const app: Express = express();
+
+//config needed for deployment to render.com
+app.set('trust proxy', 1)
+app.get('/ip', (request, response) => response.send(request.ip))
+
 const port = process.env.PORT;
 
 // Helmet middleware before other middleware and routes to set secured HTTP headers
