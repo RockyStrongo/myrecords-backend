@@ -11,19 +11,18 @@ dotenv.config();
 
 const app: Express = express();
 
-//config needed for deployment to render.com
+//config needed for deployment to render.com with reverse proxy
 app.set('trust proxy', 1)
-app.get('/ip', (request, response) => response.send(request.ip))
 
 const port = process.env.PORT;
 
 // Helmet middleware before other middleware and routes to set secured HTTP headers
 app.use(helmet());
 
-// Apply rate limiter to all requests
+// Apply rate limiter to all requests (20/min)
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20,
+    max: 2,
 });
 app.use(limiter);
 
