@@ -61,6 +61,10 @@ const RecordController = {
         } catch (error) {
             next(error);
         }
+    },
+    async getRecords(req, res, next) {
+        const records = await prisma.record.findMany()
+        return res.status(200).json(records);
     }
 }
 
