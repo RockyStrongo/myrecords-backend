@@ -30,7 +30,7 @@ Artist.init(
     {
         sequelize: Connexion.connexionInstance,
         modelName: 'Artist',
-        tableName: 'Artist'
+        tableName: 'artist'
     }
 );
 
