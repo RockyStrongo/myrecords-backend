@@ -2,12 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import Record from '../model/Record';
 import Artist from '../model/Artist';
 import { body, validationResult } from 'express-validator';
+import Genre from '../model/Genre';
+import Label from '../model/Label';
 
 export const validateCreateRecord = [
     body('year').notEmpty().isInt(),
     body('rating').optional().isInt(),
     body('title').notEmpty().isString(),
     body('artist').notEmpty().isObject(),
+    body('label').notEmpty().isObject(),
+    body('genre').notEmpty().isObject(),
     body('entryInCollectionDate').notEmpty().isISO8601(),
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
@@ -25,12 +29,16 @@ const RecordController = {
             const records = await Record.findAll({
                 include: [
                     {
-                        model: Artist,
+                        model: Artist
+                    },
+                    {
+                        model: Genre
+                    },
+                    {
+                        model: Label
                     },
                 ],
             });
-
-            // const artist = records[0].Artist?.get()
 
             return res.status(200).json(records);
         } catch (error) {
@@ -41,15 +49,29 @@ const RecordController = {
     async createRecord(req: Request, res: Response, next: NextFunction) {
         try {
             const input = req.body
-            const [artist, created] = await Artist.findOrCreate(
+            const [artist, artistCreated] = await Artist.findOrCreate(
                 {
                     where: { name: input.artist.name },
                 }
             )
 
-            const artistId = artist.get().id
+            const [label, labelCreated] = await Label.findOrCreate(
+                {
+                    where: { name: input.label.name },
+                }
+            )
 
-            const recordToCreate = { ...input, artistId: artistId }
+            const [genre, genreCreated] = await Genre.findOrCreate(
+                {
+                    where: { name: input.genre.name },
+                }
+            )
+
+            const artistId = artist.get().id
+            const labelId = label.get().id
+            const genreId = genre.get().id
+
+            const recordToCreate = { ...input, artistId: artistId, labelId: labelId, genreId: genreId }
 
             const record = await Record.create(
                 recordToCreate

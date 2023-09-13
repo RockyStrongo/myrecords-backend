@@ -2,14 +2,14 @@ import { Model, DataTypes, literal, InferAttributes, InferCreationAttributes } f
 import Record from './Record';
 import Connexion from "./Connexion";
 
-class Artist extends Model<InferAttributes<Artist>, InferCreationAttributes<Artist>> {
+class Label extends Model<InferAttributes<Label>, InferCreationAttributes<Label>> {
     declare id: number;
     declare name: String;
     declare createdAt: Date;
     declare updatedAt: Date;
 }
 
-Artist.init(
+Label.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -31,18 +31,18 @@ Artist.init(
     },
     {
         sequelize: Connexion.connexionInstance,
-        modelName: 'Artist',
-        tableName: 'artist',
+        modelName: 'Label',
+        tableName: 'label',
         schema: 'records'
     }
 );
 
-Artist.hasMany(Record, {
-    foreignKey: 'artistId'
+Label.hasMany(Record, {
+    foreignKey: 'labelId'
 });
-Record.belongsTo(Artist, {
-    foreignKey: 'artistId'
+Record.belongsTo(Label, {
+    foreignKey: 'labelId'
 });
 
 
-export default Artist;
+export default Label;

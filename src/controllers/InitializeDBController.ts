@@ -3,6 +3,8 @@ const Sequelize = require('sequelize');
 import fs from 'fs';
 import Artist from '../model/Artist';
 import Record from '../model/Record';
+import Label from '../model/Label';
+import Genre from '../model/Genre';
 
 async function initializeDB() {
     const rootCert = fs.readFileSync('/etc/ssl/certs/ca-certificates.crt');
@@ -13,7 +15,7 @@ async function initializeDB() {
         dialectOptions: {
             ssl: {
                 require: true,
-                ca: rootCert, // Use the root certificate
+                ca: rootCert,
             }
         }
     });
@@ -58,10 +60,13 @@ async function initializeDB() {
     //creation du schema
     await appSequelize.createSchema("records")
 
+    //fermeture connexion utilisateur de l'app
     appSequelize.close()
 
     //creation des tables
     await Artist.sync();
+    await Label.sync();
+    await Genre.sync();
     await Record.sync();
 
     console.log("db initialization done")
