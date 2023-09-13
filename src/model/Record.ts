@@ -52,6 +52,7 @@ Record.init(
         sequelize: Connexion.connexionInstance,
         modelName: 'Record',
         tableName: 'record',
+        schema: 'records'
     }
 );
 

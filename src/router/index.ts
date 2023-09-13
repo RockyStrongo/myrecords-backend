@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/records', RecordController.getRecords);
 router.post('/record', validateCreateRecord, RecordController.createRecord);
-router.post('/init-db', validateCreateRecord, InitializeDBController.initializeDBAsEndpoint);
+
+//only in dev : endpoint to initialize the database
+process.env.NODE_ENV === "development" && router.post('/init-db', validateCreateRecord, InitializeDBController.initializeDBAsEndpoint);
 
 export default router

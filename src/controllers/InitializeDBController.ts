@@ -23,7 +23,8 @@ async function initializeDB() {
     );
 
     await sequelize.query(
-        `CREATE DATABASE ${process.env.DB_NAME};`
+        `CREATE DATABASE ${process.env.DB_NAME};
+        `
     );
 
     await sequelize.query(
@@ -36,16 +37,34 @@ async function initializeDB() {
 
     await sequelize.query(
         `GRANT ALL PRIVILEGES ON DATABASE ${process.env.DB_NAME} TO ${process.env.DB_USERNAME};`
-    )
+    );
+
 
     // Fermeture de la connexion admin
     await sequelize.close();
 
-    //creation des tables
-    await Record.sync();
-    await Artist.sync();
+    //ouverture connexion utilisateur de l'app
+    const appSequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWD, {
+        host: process.env.DB_HOST,
+        dialect: 'postgres',
+        dialectOptions: {
+            ssl: {
+                require: true,
+                ca: rootCert, // Use the root certificate
+            }
+        }
+    });
 
-    console.log("db init done")
+    //creation du schema
+    await appSequelize.createSchema("records")
+
+    appSequelize.close()
+
+    //creation des tables
+    await Artist.sync();
+    await Record.sync();
+
+    console.log("db initialization done")
 
 }
 
