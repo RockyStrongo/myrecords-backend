@@ -15,10 +15,7 @@ class Record extends Model<InferAttributes<Record>, InferCreationAttributes<Reco
     declare discogsMasterId?: String;
     declare discogsUri?: String;
     declare Artist?: NonAttribute<Artist>;
-    declare artistId: number;
-    declare labelId: number;
     declare Label: NonAttribute<Label>;
-    declare genreId: number;
     declare Genre: NonAttribute<Genre>;
     declare createdAt: Date;
     declare updatedAt?: Date;
@@ -58,18 +55,6 @@ Record.init(
         },
         discogsUri: {
             type: DataTypes.STRING,
-        },
-        artistId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        labelId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        genreId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         },
         createdAt: {
             type: DataTypes.DATE,
