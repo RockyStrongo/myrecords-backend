@@ -9,7 +9,6 @@ class Record extends Model<InferAttributes<Record>, InferCreationAttributes<Reco
     declare title: String;
     declare year: number;
     declare rating: number;
-    declare entryInCollectionDate: Date;
     declare presentFrom?: String;
     declare imageUrl?: String;
     declare discogsMasterId?: String;
@@ -39,10 +38,6 @@ Record.init(
         },
         rating: {
             type: DataTypes.INTEGER,
-        },
-        entryInCollectionDate: {
-            type: DataTypes.DATE,
-            allowNull: false
         },
         presentFrom: {
             type: DataTypes.STRING,

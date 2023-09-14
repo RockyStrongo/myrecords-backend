@@ -1,15 +1,16 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes } from 'sequelize';
+import Sequelize from 'sequelize';
 import Record from './Record';
 import Connexion from "./Connexion";
 
-class Artist extends Model<InferAttributes<Artist>, InferCreationAttributes<Artist>> {
+class Collection extends Model<InferAttributes<Collection>, InferCreationAttributes<Collection>> {
     declare id: number;
-    declare name: String;
+    declare description: String;
     declare createdAt: Date;
     declare updatedAt: Date;
 }
 
-Artist.init(
+Collection.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -17,7 +18,7 @@ Artist.init(
             autoIncrement: true,
             primaryKey: true,
         },
-        name: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -31,18 +32,11 @@ Artist.init(
     },
     {
         sequelize: Connexion.connexionInstance,
-        modelName: 'Artist',
-        tableName: 'artist',
+        modelName: 'Collection',
+        tableName: 'collection',
         schema: 'records'
     }
 );
 
-Artist.hasMany(Record, {
-    foreignKey: 'artistId'
-});
-Record.belongsTo(Artist, {
-    foreignKey: 'artistId'
-});
 
-
-export default Artist;
+export default Collection

@@ -12,7 +12,7 @@ export const validateCreateRecord = [
     body('artist').notEmpty().isObject(),
     body('label').notEmpty().isObject(),
     body('genre').notEmpty().isObject(),
-    body('entryInCollectionDate').notEmpty().isISO8601(),
+    // body('entryInCollectionDate').notEmpty().isISO8601(),
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
