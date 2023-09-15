@@ -1,4 +1,4 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
 import Sequelize from 'sequelize';
 import Record from './Record';
 import Connexion from "./Connexion";
@@ -6,6 +6,8 @@ import Connexion from "./Connexion";
 class Collection extends Model<InferAttributes<Collection>, InferCreationAttributes<Collection>> {
     declare id: number;
     declare description: String;
+    declare Records?: NonAttribute<Record>[];
+    declare addRecords?: NonAttribute<any>;
     declare createdAt: Date;
     declare updatedAt: Date;
 }

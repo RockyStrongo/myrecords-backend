@@ -8,8 +8,6 @@ class CollectionRecords extends Model<InferAttributes<CollectionRecords>, InferC
     declare isWishList: boolean;
     declare entryInCollectionDate: Date;
     declare notes: String;
-    declare createdAt: Date;
-    declare updatedAt: Date;
 }
 
 CollectionRecords.init(
@@ -31,13 +29,6 @@ CollectionRecords.init(
         notes: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        updatedAt: {
-            type: DataTypes.DATE
         }
     },
     {
@@ -49,6 +40,6 @@ CollectionRecords.init(
 )
 
 Record.belongsToMany(Collection, { through: CollectionRecords, foreignKey: 'recordId' });
-Collection.belongsToMany(Record, { through: CollectionRecords, foreignKey: 'collectionId' });
+Collection.belongsToMany(Record, { through: CollectionRecords, foreignKey: 'collectionId'});
 
 export default CollectionRecords
