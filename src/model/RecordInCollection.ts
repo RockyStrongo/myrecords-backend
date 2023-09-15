@@ -3,14 +3,14 @@ import Connexion from "./Connexion";
 import Record from './Record';
 import Collection from './Collection';
 
-class CollectionRecords extends Model<InferAttributes<CollectionRecords>, InferCreationAttributes<CollectionRecords>>{
+class RecordInCollection extends Model<InferAttributes<RecordInCollection>, InferCreationAttributes<RecordInCollection>>{
     declare id: number;
     declare isWishList: boolean;
     declare entryInCollectionDate: Date;
     declare notes: String;
 }
 
-CollectionRecords.init(
+RecordInCollection.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -33,13 +33,13 @@ CollectionRecords.init(
     },
     {
         sequelize: Connexion.connexionInstance,
-        modelName: 'CollectionRecords',
-        tableName: 'collectionRecords',
+        modelName: 'RecordInCollection',
+        tableName: 'recordInCollection',
         schema: 'records'
     }
 )
 
-Record.belongsToMany(Collection, { through: CollectionRecords, foreignKey: 'recordId' });
-Collection.belongsToMany(Record, { through: CollectionRecords, foreignKey: 'collectionId'});
+Record.belongsToMany(Collection, { through: RecordInCollection, foreignKey: 'recordId' });
+Collection.belongsToMany(Record, { through: RecordInCollection, foreignKey: 'collectionId' });
 
-export default CollectionRecords
+export default RecordInCollection

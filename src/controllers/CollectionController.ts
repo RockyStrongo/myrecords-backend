@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Collection from '../model/Collection';
 import Record from '../model/Record';
+import Artist from '../model/Artist';
 
 async function addRecordsToCollection() {
 
@@ -19,13 +20,13 @@ const CollectionController = {
                 input
             )
 
-            const additionalFields = {
+            const recordInCollection = {
                 isWishList: true, // Replace with the actual value
                 entryInCollectionDate: new Date(), // Replace with the actual date
                 notes: 'Some notes', // Replace with the actual notes
             };
 
-            await collection.addRecords([testrecord], { through: additionalFields })
+            await collection.addRecords([testrecord], { through: recordInCollection })
 
             await collection.save()
 
@@ -41,7 +42,12 @@ const CollectionController = {
         const results = await Collection.findAll({
             include: [
                 {
-                    model: Record
+                    model: Record,
+                    include: [
+                        {
+                            model: Artist
+                        }
+                    ]
                 }
             ],
         });

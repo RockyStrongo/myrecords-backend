@@ -6,7 +6,7 @@ import Record from '../model/Record';
 import Label from '../model/Label';
 import Genre from '../model/Genre';
 import Collection from '../model/Collection';
-import CollectionRecords from '../model/CollectionRecords';
+import RecordInCollection from '../model/RecordInCollection';
 
 async function initializeDB() {
     const rootCert = fs.readFileSync('/etc/ssl/certs/ca-certificates.crt');
@@ -71,7 +71,7 @@ async function initializeDB() {
     await Genre.sync();
     await Record.sync();
     await Collection.sync();
-    await CollectionRecords.sync();
+    await RecordInCollection.sync();
 
     console.log("db initialization done")
 
