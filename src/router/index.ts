@@ -10,11 +10,14 @@ const router = express.Router();
 router.get('/records', RecordController.getRecords);
 router.post('/record', validateCreateRecord, RecordController.createRecord);
 
-router.get('/collections', CollectionController.getCollections);
+// router.get('/collections', CollectionController.getCollections);
 router.get('/collection/:id', CollectionController.getCollection);
-router.patch('/collection/:id', CollectionController.addRecordsToCollection);
+router.post('/collection/:id/records', CollectionController.addRecordsToCollection);
+//to do : patch collection
 
 router.post('/register', AuthController.register);
+//to do : remove create collection from register, will be 2 endpoints
+//to do : login
 
 //only in dev : endpoint to initialize the database
 process.env.NODE_ENV === "development" && router.post('/init-db', InitializeDBController.initializeDBAsEndpoint);
