@@ -31,6 +31,11 @@ async function initializeDB() {
         `
     );
 
+    await sequelize.query(`
+    ALTER DATABASE ${process.env.DB_NAME}
+    SET TIMEZONE TO 'Europe/Paris';
+    `)
+
     await sequelize.query(
         `DROP USER IF EXISTS ${process.env.DB_USERNAME};`
     );
