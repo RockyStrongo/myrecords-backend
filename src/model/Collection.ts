@@ -4,12 +4,11 @@ import Record from './Record';
 import Connexion from "./Connexion";
 
 class Collection extends Model<InferAttributes<Collection>, InferCreationAttributes<Collection>> {
-    declare id: number;
+    declare id?: number;
     declare description: String;
+    declare userId: number;
     declare Records?: NonAttribute<Record>[];
     declare addRecords?: NonAttribute<any>;
-    declare createdAt: Date;
-    declare updatedAt: Date;
 }
 
 Collection.init(
@@ -24,12 +23,9 @@ Collection.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        createdAt: {
-            type: DataTypes.DATE,
+        userId: {
+            type: DataTypes.INTEGER,
             allowNull: false
-        },
-        updatedAt: {
-            type: DataTypes.DATE
         }
     },
     {

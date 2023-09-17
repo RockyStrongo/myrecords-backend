@@ -74,16 +74,7 @@ const RecordController = {
             const recordToCreate = { ...input, artistId: artistId, labelId: labelId, genreId: genreId }
 
             const record = await Record.create(
-                recordToCreate,
-                {
-                    include: [{
-                        association: Record.associations.Artist
-                    }, {
-                        association: Record.associations.Label
-                    }, {
-                        association: Record.associations.Genre
-                    },]
-                }
+                recordToCreate
             )
 
             return res.status(201).json(record);

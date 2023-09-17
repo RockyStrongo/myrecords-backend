@@ -7,6 +7,9 @@ import Label from '../model/Label';
 import Genre from '../model/Genre';
 import Collection from '../model/Collection';
 import RecordInCollection from '../model/RecordInCollection';
+import User from '../model/User';
+import Role from '../model/Role';
+import UserRoles from '../model/UserRoles';
 
 async function initializeDB() {
     const rootCert = fs.readFileSync('/etc/ssl/certs/ca-certificates.crt');
@@ -66,6 +69,7 @@ async function initializeDB() {
 
     //creation du schema
     await appSequelize.createSchema("records")
+    await appSequelize.createSchema("users")
 
     //fermeture connexion utilisateur de l'app
     appSequelize.close()
@@ -75,6 +79,9 @@ async function initializeDB() {
     await Label.sync();
     await Genre.sync();
     await Record.sync();
+    await Role.sync();
+    await User.sync();
+    await UserRoles.sync();
     await Collection.sync();
     await RecordInCollection.sync();
 
