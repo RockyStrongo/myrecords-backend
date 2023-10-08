@@ -7,21 +7,21 @@ import RecordController from '../controllers/RecordController';
 const router = express.Router();
 
 //get all records - will not be needed in future
-router.get('/records', RecordController.getRecords);
+router.get('/records', AuthController.verifyJwt, RecordController.getRecords);
 //create a record
-router.post('/records', RecordController.validateCreateRecord, RecordController.createRecord);
+router.post('/records', AuthController.verifyJwt, RecordController.validateCreateRecord, RecordController.createRecord);
 //todo get 1 record
 
-//todo create a collection
-router.post('/collections', CollectionController.validateCreateCollection, CollectionController.createCollection)
+//create a collection
+router.post('/collections', AuthController.verifyJwt, CollectionController.validateCreateCollection, CollectionController.createCollection)
 //get one collection
-router.get('/collections/:id', CollectionController.getCollection);
+router.get('/collections/:id', AuthController.verifyJwt, CollectionController.getCollection);
 //add records to a collection
-router.patch('/collections/:id/records', CollectionController.addRecordsToCollection);
+router.patch('/collections/:id/records', AuthController.verifyJwt, CollectionController.addRecordsToCollection);
 //to do : patch collection
 
-router.post('/register', AuthController.register);
-//to do : login
+router.post('/register', AuthController.validateRegister, AuthController.register);
+router.post('/login', AuthController.validateLogin, AuthController.login);
 
 //only in dev : endpoint to initialize the database
 process.env.NODE_ENV === "development" && router.post('/init-db', InitializeDBController.initializeDBAsEndpoint);

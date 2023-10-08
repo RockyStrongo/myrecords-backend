@@ -47,6 +47,7 @@ const RecordController = {
     async createRecord(req: Request, res: Response, next: NextFunction) {
         try {
             const input = req.body
+
             const [artist, artistCreated] = await Artist.findOrCreate(
                 {
                     where: { name: input.artist.name },

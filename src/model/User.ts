@@ -5,10 +5,10 @@ import Role from './Role';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: number;
-    declare firstName: String;
-    declare lastName: String;
-    declare email: String;
-    declare password: String;
+    declare firstName: string;
+    declare lastName: string;
+    declare email: string;
+    declare password: string;
     declare Collection: NonAttribute<Collection>;
     declare Role: NonAttribute<Role>;
     declare addRoles?: NonAttribute<any>;
