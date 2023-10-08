@@ -1,22 +1,26 @@
 import express from 'express';
-import RecordController from '../controllers/RecordController'
-import { validateCreateRecord } from '../controllers/RecordController';
-import InitializeDBController from '../controllers/InitializeDBController';
-import CollectionController from '../controllers/CollectionController';
 import AuthController from '../controllers/AuthController';
+import CollectionController from '../controllers/CollectionController';
+import InitializeDBController from '../controllers/InitializeDBController';
+import RecordController from '../controllers/RecordController';
 
 const router = express.Router();
 
+//get all records - will not be needed in future
 router.get('/records', RecordController.getRecords);
-router.post('/record', validateCreateRecord, RecordController.createRecord);
+//create a record
+router.post('/records', RecordController.validateCreateRecord, RecordController.createRecord);
+//todo get 1 record
 
-// router.get('/collections', CollectionController.getCollections);
-router.get('/collection/:id', CollectionController.getCollection);
-router.post('/collection/:id/records', CollectionController.addRecordsToCollection);
+//todo create a collection
+router.post('/collections', CollectionController.validateCreateCollection, CollectionController.createCollection)
+//get one collection
+router.get('/collections/:id', CollectionController.getCollection);
+//add records to a collection
+router.post('/collections/:id/records', CollectionController.addRecordsToCollection);
 //to do : patch collection
 
 router.post('/register', AuthController.register);
-//to do : remove create collection from register, will be 2 endpoints
 //to do : login
 
 //only in dev : endpoint to initialize the database

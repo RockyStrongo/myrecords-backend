@@ -5,24 +5,22 @@ import { body, validationResult } from 'express-validator';
 import Genre from '../model/Genre';
 import Label from '../model/Label';
 
-export const validateCreateRecord = [
-    body('year').notEmpty().isInt(),
-    body('rating').optional().isInt(),
-    body('title').notEmpty().isString(),
-    body('artist').notEmpty().isObject(),
-    body('label').notEmpty().isObject(),
-    body('genre').notEmpty().isObject(),
-    // body('entryInCollectionDate').notEmpty().isISO8601(),
-    (req: Request, res: Response, next: NextFunction) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
-        next();
-    }
-];
-
 const RecordController = {
+    validateCreateRecord: [
+        body('year').notEmpty().isInt(),
+        body('rating').optional().isInt(),
+        body('title').notEmpty().isString(),
+        body('artist').notEmpty().isObject(),
+        body('label').notEmpty().isObject(),
+        body('genre').notEmpty().isObject(),
+        (req: Request, res: Response, next: NextFunction) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            }
+            next();
+        }
+    ],
     async getRecords(req: Request, res: Response, next: NextFunction) {
         try {
 

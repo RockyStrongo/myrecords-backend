@@ -4,6 +4,7 @@ import Record from '../model/Record';
 import Artist from '../model/Artist';
 import User from '../model/User';
 import { Op } from 'sequelize';
+import { body, validationResult } from 'express-validator';
 
 type addrecordInCollectionInput = {
     recordId: number
@@ -12,37 +13,49 @@ type addrecordInCollectionInput = {
     notes: String
 }
 
+// export const validateCreateCollection = [
+//     body('description').notEmpty().isString(),
+//     body('userId').notEmpty().isInt(),
+//     (req: Request, res: Response, next: NextFunction) => {
+//         const errors = validationResult(req);
+//         if (!errors.isEmpty()) {
+//             return res.status(422).json({ errors: errors.array() });
+//         }
+//         next();
+//     }
+// ];
+
 const CollectionController = {
+    validateCreateCollection: [
+        body('description').notEmpty().isString(),
+        body('userId').notEmpty().isInt(),
+        (req: Request, res: Response, next: NextFunction) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            }
+            next();
+        }
+    ],
+    async createCollection(req: Request, res: Response, next: NextFunction) {
 
-    // async createCollection(req: Request, res: Response, next: NextFunction) {
+        try {
+            const input = req.body
 
-    //     try {
-    //         const input = req.body
+            const testrecord = await Record.findByPk(1)
+            const testUser = await User.findByPk(1)
 
-    //         const testrecord = await Record.findByPk(1)
-    //         const testUser = await User.findByPk(1)
+            const collectionToCreate = { ...input, userId: testUser?.get().id }
 
-    //         const collectionToCreate = { ...input, userId: testUser?.get().id }
+            const collection = await Collection.create(
+                collectionToCreate
+            )
 
-    //         const collection = await Collection.create(
-    //             collectionToCreate
-    //         )
-
-    //         const recordInCollection = {
-    //             isWishList: true, // Replace with the actual value
-    //             entryInCollectionDate: new Date(), // Replace with the actual date
-    //             notes: 'Some notes', // Replace with the actual notes
-    //         };
-
-    //         await collection.addRecords([testrecord], { through: recordInCollection })
-
-    //         await collection.save()
-
-    //         return res.status(201).json(collection);
-    //     } catch (error) {
-    //         next(error)
-    //     }
-    // },
+            return res.status(201).json(collection);
+        } catch (error) {
+            next(error)
+        }
+    },
     async getCollection(req: Request, res: Response, next: NextFunction) {
 
         try {
