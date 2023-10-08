@@ -13,22 +13,11 @@ type addrecordInCollectionInput = {
     notes: String
 }
 
-// export const validateCreateCollection = [
-//     body('description').notEmpty().isString(),
-//     body('userId').notEmpty().isInt(),
-//     (req: Request, res: Response, next: NextFunction) => {
-//         const errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//             return res.status(422).json({ errors: errors.array() });
-//         }
-//         next();
-//     }
-// ];
-
 const CollectionController = {
     validateCreateCollection: [
         body('description').notEmpty().isString(),
         body('userId').notEmpty().isInt(),
+        //to add check that userId exists
         (req: Request, res: Response, next: NextFunction) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -42,13 +31,8 @@ const CollectionController = {
         try {
             const input = req.body
 
-            const testrecord = await Record.findByPk(1)
-            const testUser = await User.findByPk(1)
-
-            const collectionToCreate = { ...input, userId: testUser?.get().id }
-
             const collection = await Collection.create(
-                collectionToCreate
+                input
             )
 
             return res.status(201).json(collection);
@@ -110,6 +94,20 @@ const CollectionController = {
 
 
     },
+    validateAddRecordsToCollection: [
+        body('recordId').notEmpty().isInt(),
+        //todo add check that recordId exists
+        body('isWishList').notEmpty().isBoolean(),
+        body('entryInCollectionDate').notEmpty().isISO8601(),
+        body('notes').optional().isString(),
+        (req: Request, res: Response, next: NextFunction) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            }
+            next();
+        }
+    ],
     async addRecordsToCollection(req: Request, res: Response, next: NextFunction) {
 
         try {

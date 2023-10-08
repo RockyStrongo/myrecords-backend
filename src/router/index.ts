@@ -17,7 +17,7 @@ router.post('/collections', CollectionController.validateCreateCollection, Colle
 //get one collection
 router.get('/collections/:id', CollectionController.getCollection);
 //add records to a collection
-router.post('/collections/:id/records', CollectionController.addRecordsToCollection);
+router.patch('/collections/:id/records', CollectionController.addRecordsToCollection);
 //to do : patch collection
 
 router.post('/register', AuthController.register);

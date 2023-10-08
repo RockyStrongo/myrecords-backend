@@ -85,6 +85,12 @@ async function initializeDB() {
     await Collection.sync();
     await RecordInCollection.sync();
 
+    await Role.create(
+        {
+            role: "user",
+        }
+    )
+
     console.log("db initialization done")
 
 }

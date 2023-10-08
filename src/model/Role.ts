@@ -2,7 +2,7 @@ import { Model, DataTypes, InferAttributes, InferCreationAttributes } from 'sequ
 import Connexion from "./Connexion";
 
 class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {
-    declare id: number;
+    declare id?: number;
     declare role: String;
 }
 

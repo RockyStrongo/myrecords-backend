@@ -11,6 +11,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare password: String;
     declare Collection: NonAttribute<Collection>;
     declare Role: NonAttribute<Role>;
+    declare addRoles?: NonAttribute<any>;
     declare createdAt: Date;
     declare updatedAt: Date;
 }

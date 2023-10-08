@@ -15,12 +15,10 @@ UserRoles.init({}, {
 Role.belongsToMany(User, {
     through: UserRoles,
     foreignKey: 'roleId',
-    as: 'roles'
 });
 User.belongsToMany(Role, {
     through: UserRoles,
     foreignKey: 'userId',
-    as: 'users'
 });
 
 export default UserRoles;

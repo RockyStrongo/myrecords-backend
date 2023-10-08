@@ -28,7 +28,7 @@ RecordInCollection.init(
         },
         notes: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         }
     },
     {
