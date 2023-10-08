@@ -8,8 +8,6 @@ class Record extends Model<InferAttributes<Record>, InferCreationAttributes<Reco
     declare id: number;
     declare title: String;
     declare year: number;
-    declare rating: number;
-    declare presentFrom?: String;
     declare imageUrl?: String;
     declare discogsMasterId?: String;
     declare discogsUri?: String;
@@ -35,12 +33,6 @@ Record.init(
         year: {
             type: DataTypes.INTEGER,
             allowNull: false
-        },
-        rating: {
-            type: DataTypes.INTEGER,
-        },
-        presentFrom: {
-            type: DataTypes.STRING,
         },
         imageUrl: {
             type: DataTypes.STRING,

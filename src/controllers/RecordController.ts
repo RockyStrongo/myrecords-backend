@@ -5,6 +5,42 @@ import { body, validationResult } from 'express-validator';
 import Genre from '../model/Genre';
 import Label from '../model/Label';
 
+type recordAlreadyExistsReturnType = {
+    exists: boolean,
+    existingRecord: Record | null
+}
+
+
+async function recordAlreadyExists(input: any): Promise<recordAlreadyExistsReturnType> {
+
+    const record = await Record.findOne(
+        {
+            where: { title: input.title, year: input.year },
+            include: [
+                {
+                    model: Artist, where: {
+                        name: input.artist.name
+                    }
+                },
+            ]
+        }
+    )
+
+    if (!record) {
+        return {
+            exists: false,
+            existingRecord: null
+        }
+    }
+
+    return {
+        exists: true,
+        existingRecord: record
+    }
+
+}
+
+
 const RecordController = {
     validateCreateRecord: [
         body('year').notEmpty().isInt(),
@@ -48,6 +84,13 @@ const RecordController = {
         try {
             const input = req.body
 
+            // check if record already exists, if so return existing
+            const { exists, existingRecord } = await recordAlreadyExists(input);
+
+            if (exists) {
+                return res.status(200).json(existingRecord)
+            }
+
             const [artist, artistCreated] = await Artist.findOrCreate(
                 {
                     where: { name: input.artist.name },
@@ -82,7 +125,7 @@ const RecordController = {
             console.log(error)
             next(error)
         }
-    }
+    },
 }
 
 export default RecordController
