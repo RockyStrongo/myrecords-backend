@@ -5,6 +5,8 @@ import Collection from './Collection';
 
 class RecordInCollection extends Model<InferAttributes<RecordInCollection>, InferCreationAttributes<RecordInCollection>>{
     declare id: number;
+    declare recordId?: number;
+    declare collectionId?: number;
     declare isWishList: boolean;
     declare entryInCollectionDate: Date;
     declare notes: String;

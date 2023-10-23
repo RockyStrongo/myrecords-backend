@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
+import { Op } from 'sequelize';
+import Artist from '../model/Artist';
 import Collection from '../model/Collection';
 import Record from '../model/Record';
-import Artist from '../model/Artist';
-import User from '../model/User';
-import { Op } from 'sequelize';
-import { body, validationResult } from 'express-validator';
+import RecordInCollection from '../model/RecordInCollection';
 
 type addrecordInCollectionInput = {
     recordId: number
@@ -115,38 +115,22 @@ const CollectionController = {
 
             //get collection
             const collection = await Collection.findByPk(id)
+            if (!collection) {
+                return res.status(404).json("collection not found");
+            }
 
             const input = req.body
 
-            //get record Ids from input
-            const recordIds = input.map(
-                (item: addrecordInCollectionInput) => {
-                    return item.recordId
-                }
-            )
+            const { recordId, ...recordInCollectionData } = input;
 
-            //get records to be linked to collection
-            const records = await Record.findAll(
-                {
-                    where: {
-                        id: {
-                            [Op.in]: recordIds,
-                        }
-                    }
-                }
-            )
+            //get record to be linked to collection
+            const record = await Record.findByPk(recordId)
 
-            //update collection
-            let updatedCollection
-
-            for (let index = 0; index < records.length; index++) {
-
-                //get collection info from input
-                const thisInput = input[index]
-                const { recordId, ...recordInCollectionData } = thisInput;
-
-                updatedCollection = await collection?.addRecords(records[index], { through: recordInCollectionData })
+            if (!record) {
+                return res.status(404).json("record not found");
             }
+
+            const updatedCollection = await collection?.addRecords(record, { through: recordInCollectionData })
 
             return res.status(200).json(collection);
 
@@ -154,6 +138,54 @@ const CollectionController = {
             next(error)
         }
 
+    },
+    validateupdateRecordInCollection: [
+        body('isWishList').optional().isBoolean(),
+        body('entryInCollectionDate').optional().isISO8601(),
+        body('notes').optional().isString(),
+        (req: Request, res: Response, next: NextFunction) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ errors: errors.array() });
+            }
+            next();
+        }
+    ],
+    async updateRecordInCollection(req: Request, res: Response, next: NextFunction) {
+
+        try {
+
+            const { collectionId, recordId } = req.params;
+            const input = req.body
+
+            // Check if the collection and record exist
+            const collection = await Collection.findByPk(collectionId);
+            const record = await Record.findByPk(recordId);
+
+            if (!collection || !record) {
+                return res.status(404).json({ message: 'Collection or Record not found' });
+            }
+
+            // Update the pivot table entry
+            const [affectedRows] = await RecordInCollection.update(
+                {
+                    isWishList: input.isWishList ?? record.RecordInCollection.isWishList,
+                    entryInCollectionDate: input.entryInCollectionDate ?? record.RecordInCollection.entryInCollectionDate,
+                    notes: input.notes ?? record.RecordInCollection.notes,
+                },
+                { where: { collectionId: collectionId, recordId }, }
+            );
+
+            if (affectedRows === 1) {
+                const updatedRecordInCollection = await RecordInCollection.findOne({ where: { collectionId, recordId } });
+                return res.status(200).json(updatedRecordInCollection);
+            } else {
+                return res.status(500)
+            }
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
     }
 }
 

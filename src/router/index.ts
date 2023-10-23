@@ -6,19 +6,19 @@ import RecordController from '../controllers/RecordController';
 
 const router = express.Router();
 
-//get all records - will not be needed in future
-router.get('/records', AuthController.verifyJwt, RecordController.getRecords);
 //create a record
 router.post('/records', AuthController.verifyJwt, RecordController.validateCreateRecord, RecordController.createRecord);
-//todo get 1 record
+// get records
+router.get('/records', AuthController.verifyJwt, RecordController.getRecords);
 
 //create a collection
 router.post('/collections', AuthController.verifyJwt, CollectionController.validateCreateCollection, CollectionController.createCollection)
 //get one collection
 router.get('/collections/:id', AuthController.verifyJwt, CollectionController.getCollection);
-//add records to a collection
-router.patch('/collections/:id/records', AuthController.verifyJwt, CollectionController.addRecordsToCollection);
-//to do : patch collection
+//add one record to a collection
+router.patch('/collections/:id/records', AuthController.verifyJwt, CollectionController.validateAddRecordsToCollection, CollectionController.addRecordsToCollection);
+//patch record in collection
+router.patch('/collections/:collectionId/records/:recordId', AuthController.verifyJwt, CollectionController.validateupdateRecordInCollection, CollectionController.updateRecordInCollection);
 
 router.post('/register', AuthController.validateRegister, AuthController.register);
 router.post('/login', AuthController.validateLogin, AuthController.login);

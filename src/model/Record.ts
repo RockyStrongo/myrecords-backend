@@ -3,6 +3,7 @@ import Connexion from "./Connexion";
 import Artist from './Artist';
 import Label from './Label';
 import Genre from './Genre';
+import RecordInCollection from './RecordInCollection';
 
 class Record extends Model<InferAttributes<Record>, InferCreationAttributes<Record>> {
     declare id: number;
@@ -14,6 +15,7 @@ class Record extends Model<InferAttributes<Record>, InferCreationAttributes<Reco
     declare Artist?: NonAttribute<Artist>;
     declare Label: NonAttribute<Label>;
     declare Genre: NonAttribute<Genre>;
+    declare RecordInCollection: NonAttribute<RecordInCollection>;
     declare createdAt: Date;
     declare updatedAt?: Date;
 }

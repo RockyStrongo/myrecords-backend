@@ -126,6 +126,19 @@ const RecordController = {
             next(error)
         }
     },
+    async getOneRecord(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+
+            const record = await Record.findByPk(id)
+
+            res.status(200).json(record)
+
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
 }
 
 export default RecordController
