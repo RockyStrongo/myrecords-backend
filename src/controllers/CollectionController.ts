@@ -6,13 +6,6 @@ import Collection from '../model/Collection';
 import Record from '../model/Record';
 import RecordInCollection from '../model/RecordInCollection';
 
-type addrecordInCollectionInput = {
-    recordId: number
-    isWishList: boolean
-    entryInCollectionDate: Date,
-    notes: String
-}
-
 const CollectionController = {
     validateCreateCollection: [
         body('description').notEmpty().isString(),
@@ -132,7 +125,7 @@ const CollectionController = {
 
             const updatedCollection = await collection?.addRecords(record, { through: recordInCollectionData })
 
-            return res.status(200).json(collection);
+            return res.status(200).json(updatedCollection);
 
         } catch (error) {
             next(error)
