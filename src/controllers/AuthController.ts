@@ -66,10 +66,7 @@ const AuthController = {
             const user = await User.findOne({
                 where: {
                     email: req.body.email,
-                },
-                include: [
-                    { model: Collection, attributes: ["id"] }
-                ]
+                }
             });
 
             if (!user) {
@@ -111,13 +108,13 @@ const AuthController = {
 
         const bearerToken = tokenParts[1];
         const jwtSecret = process.env.JWT_SECRET ?? ""
-    
+
         //token should be valid
         try {
-          // Verify the token using the secret key
-          const decoded = jwt.verify(bearerToken, jwtSecret);
-          // Call next to pass control to the next middleware or route handler
-          return next(); 
+            // Verify the token using the secret key
+            const decoded = jwt.verify(bearerToken, jwtSecret);
+            // Call next to pass control to the next middleware or route handler
+            return next();
         } catch (err) {
             return res.status(401).json("Not Authorized");
         }

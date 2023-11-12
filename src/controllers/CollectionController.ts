@@ -24,6 +24,8 @@ const CollectionController = {
         try {
             const input = req.body
 
+            //todo verify user id is ok with jwt
+
             const collection = await Collection.create(
                 input
             )
