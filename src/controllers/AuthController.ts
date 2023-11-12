@@ -81,8 +81,10 @@ const AuthController = {
                 return;
             }
 
+            console.log(user);
+
             const jwtSecret = process.env.JWT_SECRET ?? ""
-            const token = jwt.sign({ userId: user.id, collectionId: user.Collection.id }, jwtSecret, { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
 
             const { password, ...userWithoutPassword } = user.dataValues
             const userWithToken = { ...userWithoutPassword, token: token }
